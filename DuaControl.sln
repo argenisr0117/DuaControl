@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuaControl.Web", "DuaControl.Web\DuaControl.Web.csproj", "{484F4A03-ED1C-4EC1-8890-CBEAEA3828CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{484F4A03-ED1C-4EC1-8890-CBEAEA3828CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{484F4A03-ED1C-4EC1-8890-CBEAEA3828CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{484F4A03-ED1C-4EC1-8890-CBEAEA3828CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{484F4A03-ED1C-4EC1-8890-CBEAEA3828CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4FC59EC-4303-4F88-BB0C-A47C0EB59854}
+	EndGlobalSection
+EndGlobal
