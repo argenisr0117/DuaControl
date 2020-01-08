@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Facturas";
 }
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+@*<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />*@
 <br />
 <h2>Facturas</h2>
 
@@ -11,7 +11,7 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Facturas</h3>
+                <h3 class="panel-title"></h3>
             </div>
             <div class="panel-body">
                 <table class="table table-hover table-responsive" id="MyTable">
@@ -32,6 +32,9 @@
                                 @Html.DisplayNameFor(model => model.Client.BusinessName)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.Port.Name)
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Details)
                             </th>
                             <th>
@@ -46,36 +49,37 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.InvoiceNumber)</td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.InvoiceDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Client.ClienteId)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Client.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Client.BusinessName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Details)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Adjuntos.Count)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Remarks)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" class="btn btn-sm btn-default" asp-route-id="@item.Id"><i class="glyphicon-pencil" title="Edit"></i> </a>
-                                    <a asp-action="Details" class="btn btn-sm btn-default" asp-route-id="@item.Id"><i class="glyphicon glyphicon-list" title="List"> </i> </a>
-                                    <button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>
-
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.InvoiceNumber)</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InvoiceDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.ClienteId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.BusinessName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Port.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Details)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Adjuntos.Count)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Remarks)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id"><i class="glyphicon-pencil" title="Edit"></i> </a>
+                                <a asp-action="Details" class="btn btn-sm btn-info" asp-route-id="@item.Id"><i class="glyphicon glyphicon-list" title="Details"> </i> </a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -86,7 +90,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    @*<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>*@
 
     <script type="text/javascript">
         $(document).ready(function () {

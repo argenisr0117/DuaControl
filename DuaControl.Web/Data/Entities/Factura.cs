@@ -17,12 +17,12 @@ namespace DuaControl.Web.Data.Entities
 
         [Display(Name = "Fecha Factura")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime InvoiceDate { get; set; }
 
-        [Display(Name = "Fecha Factura")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd", ApplyFormatInEditMode = true)]
-        public DateTime InvoiceDateLocal => InvoiceDate.ToLocalTime();
+        //[Display(Name = "Fecha Factura")]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd", ApplyFormatInEditMode = true)]
+        //public DateTime InvoiceDateLocal => InvoiceDate.Date;
 
         [Display(Name = "# Factura")]
         [MaxLength(15, ErrorMessage = "El {0} campo no puede tener más de {1} caracteres.")]
@@ -37,5 +37,13 @@ namespace DuaControl.Web.Data.Entities
 
         [Display(Name = "Detalle")]
         public string Details { get; set; }
+
+        [Display(Name = "Usuario")]
+        [MaxLength(15)]
+        public string InvoiceUser { get; set; }
+
+        [Display(Name = "Sistema")]
+        [MaxLength(15)]
+        public string InvoiceSystem { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using DuaControl.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DuaControl.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200107143102_ModifyingDatabase")]
+    partial class ModifyingDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,15 +78,15 @@ namespace DuaControl.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(15);
 
-                    b.Property<string>("InvoiceSystem")
-                        .HasMaxLength(15);
-
-                    b.Property<string>("InvoiceUser")
-                        .HasMaxLength(15);
-
                     b.Property<int>("PortId");
 
                     b.Property<string>("Remarks");
+
+                    b.Property<string>("Sistema")
+                        .HasMaxLength(15);
+
+                    b.Property<string>("User")
+                        .HasMaxLength(15);
 
                     b.HasKey("Id");
 

@@ -1,35 +1,91 @@
-﻿@model DuaControl.Web.Data.Entities.Factura
+﻿@model DuaControl.Web.Models.FacturaViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Agregar adjuntos";
 }
 
-<h2>Edit</h2>
-
 <h4>Factura</h4>
+<hr />
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.InvoiceDate)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.InvoiceDate)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.InvoiceNumber)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.InvoiceNumber)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Remarks)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Remarks)
+    </dd>
+</dl>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
+            <div class="form-group-sm">
+                <label asp-for="Cliente" class="control-label"></label>
+                <input asp-for="Cliente" class="form-control" readonly />
+                <span asp-validation-for="Cliente" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group-sm">
+                <label asp-for="Details" class="control-label"></label>
+                <textarea asp-for="Details" class="form-control"></textarea>
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group-sm">
                 <label asp-for="InvoiceDate" class="control-label"></label>
-                <input asp-for="InvoiceDate" class="form-control" />
+                <input asp-for="InvoiceDate" class="form-control" readonly />
                 <span asp-validation-for="InvoiceDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <br />
+            <div class="form-group-sm">
                 <label asp-for="InvoiceNumber" class="control-label"></label>
-                <input asp-for="InvoiceNumber" class="form-control" />
+                <input asp-for="InvoiceNumber" class="form-control" readonly />
                 <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <br />
+            <div class="form-group-sm">
+                <label asp-for="PuertoId" class="control-label"></label>
+                <select asp-for="PuertoId" asp-items="Model.Puertos" class="form-control"></select>
+                <span asp-validation-for="PuertoId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group-sm">
                 <label asp-for="Remarks" class="control-label"></label>
-                <input asp-for="Remarks" class="form-control" />
+                <textarea asp-for="Remarks" class="form-control"></textarea>
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <br />
+            <div class="form-group-sm">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group-sm">
+            <label asp-for="Adjuntos" class="control-label"></label>
+        </div>
+        <form asp-action="AddFile" enctype="multipart/form-data" class="dropzone">
+
+            <div class="text-center">
+                <i class="glyphicon glyphicon-cloud-upload gi-2x"></i>
+                <h3 class="dz-message">Arrastre sus adjuntos aquí</h3>
+            </div>
+            <div class="fallback">
+                <input type="file" name="file" />
             </div>
         </form>
     </div>

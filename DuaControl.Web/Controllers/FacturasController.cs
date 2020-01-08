@@ -7,16 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DuaControl.Web.Data;
 using DuaControl.Web.Data.Entities;
+using DuaControl.Web.Data.Helpers;
+using DuaControl.Web.Models;
 
 namespace DuaControl.Web.Controllers
 {
     public class FacturasController : Controller
     {
         private readonly DataContext _context;
+        private readonly IConverterHelper _converterHelper;
+        private readonly ICombosHelper _combosHelper;
 
-        public FacturasController(DataContext context)
+        public FacturasController(
+            DataContext context,
+            IConverterHelper converterHelper,
+            ICombosHelper combosHelper)
         {
             _context = context;
+            _converterHelper = converterHelper;
+            _combosHelper = combosHelper;
         }
 
         // GET: Facturas
@@ -54,12 +63,16 @@ namespace DuaControl.Web.Controllers
                 return NotFound();
             }
 
-            var factura = await _context.Facturas.FindAsync(id);
+            //var factura = await _context.Facturas.FindAsync(id);
+            var factura = await _context.Facturas
+                .Include(f => f.Client)
+                .Include(f => f.Port)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (factura == null)
             {
                 return NotFound();
             }
-            return View(factura);
+            return View(_converterHelper.ToFacturaViewModel(factura));
         }
 
         // POST: Facturas/Edit/5
@@ -67,12 +80,12 @@ namespace DuaControl.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,InvoiceDate,InvoiceNumber,Remarks")] Factura factura)
+        public async Task<IActionResult> Edit(FacturaViewModel factura)
         {
-            if (id != factura.Id)
-            {
-                return NotFound();
-            }
+            //if (id != factura.Id)
+            //{
+            //    return NotFound();
+            //}
 
             if (ModelState.IsValid)
             {
@@ -94,6 +107,7 @@ namespace DuaControl.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            factura.Puertos = _combosHelper.GetComboPorts();
             return View(factura);
         }
 
