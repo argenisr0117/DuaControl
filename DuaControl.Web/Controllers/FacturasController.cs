@@ -9,6 +9,9 @@ using DuaControl.Web.Data;
 using DuaControl.Web.Data.Entities;
 using DuaControl.Web.Data.Helpers;
 using DuaControl.Web.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace DuaControl.Web.Controllers
 {
@@ -17,15 +20,18 @@ namespace DuaControl.Web.Controllers
         private readonly DataContext _context;
         private readonly IConverterHelper _converterHelper;
         private readonly ICombosHelper _combosHelper;
+        private readonly IHostingEnvironment _environment;
 
         public FacturasController(
             DataContext context,
             IConverterHelper converterHelper,
-            ICombosHelper combosHelper)
+            ICombosHelper combosHelper,
+            IHostingEnvironment environment)
         {
             _context = context;
             _converterHelper = converterHelper;
             _combosHelper = combosHelper;
+            _environment = environment;
         }
 
         // GET: Facturas
@@ -79,24 +85,20 @@ namespace DuaControl.Web.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(FacturaViewModel factura)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(FacturaViewModel model)
         {
-            //if (id != factura.Id)
-            //{
-            //    return NotFound();
-            //}
-
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var factura = await _converterHelper.ToFacturaAsync(model);
                     _context.Update(factura);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FacturaExists(factura.Id))
+                    if (!FacturaExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -105,15 +107,46 @@ namespace DuaControl.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return new JsonResult(true);
             }
-            factura.Puertos = _combosHelper.GetComboPorts();
-            return View(factura);
+            model.Puertos = _combosHelper.GetComboPorts();
+            return View(model);
         }
 
         private bool FacturaExists(int id)
         {
             return _context.Facturas.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFileAsync(FacturaViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var files = HttpContext.Request.Form.Files;
+                var path = Path.Combine(_environment.WebRootPath, @"uploads\"+model.InvoiceNumber);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                if (files.Count > 0)
+                {
+                    foreach (var file in files)
+                    {
+                        if (file.Length > 0)
+                        {
+                            using (var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
+                            {
+                                await file.CopyToAsync(fileStream);
+                            }
+                        }
+                    }
+
+                    return new JsonResult(true);
+                }
+            }
+            return RedirectToAction($"Edit/{model.Id}");
+            //return RedirectToAction(nameof(Index));
         }
     }
 }

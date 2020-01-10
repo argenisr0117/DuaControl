@@ -1,5 +1,6 @@
 ﻿using DuaControl.Web.Data.Entities;
 using DuaControl.Web.Models;
+using System.Threading.Tasks;
 
 namespace DuaControl.Web.Data.Helpers
 {
@@ -16,6 +17,24 @@ namespace DuaControl.Web.Data.Helpers
             _combosHelper = combosHelper;
         }
 
+        public async Task<Factura>  ToFacturaAsync(FacturaViewModel factura)
+        {
+            var Factura = new Factura
+            {
+                Id = factura.Id,
+                InvoiceNumber=factura.InvoiceNumber,
+                InvoiceDate=factura.InvoiceDate,
+                InvoiceSystem=factura.InvoiceSystem,
+                InvoiceUser=factura.InvoiceUser,
+                Details=factura.Details,
+                Client=await _dataContext.Clientes.FindAsync(factura.ClienteId),
+                Port = await _dataContext.Puertos.FindAsync(factura.PuertoId),
+                Remarks = factura.Remarks
+            };
+
+            return Factura;
+        }
+
         public FacturaViewModel ToFacturaViewModel(Factura factura)
         {
             return new FacturaViewModel
@@ -23,6 +42,9 @@ namespace DuaControl.Web.Data.Helpers
                 InvoiceDate = factura.InvoiceDate,
                 InvoiceNumber = factura.InvoiceNumber,
                 InvoiceSystem = factura.InvoiceSystem,
+                Client =factura.Client,
+                ClienteId=factura.Client.ClienteId,
+                Port = factura.Port,
                 //Id = model.Id == 0 ? null :model.Id,
                 InvoiceUser = factura.InvoiceUser,
                 Cliente = factura.Client.Name,

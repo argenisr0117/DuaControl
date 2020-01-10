@@ -4,85 +4,100 @@
     ViewData["Title"] = "Agregar adjuntos";
 }
 
-<h4>Factura</h4>
+<h2>Factura: <span>@Html.DisplayFor(model => model.InvoiceNumber)</span></h2>
 <hr />
 
-<dl class="dl-horizontal">
+<dl class="dl-horizontal dl-personalize ">
     <dt>
-        @Html.DisplayNameFor(model => model.InvoiceDate)
+        @Html.DisplayNameFor(model => model.Cliente):
     </dt>
     <dd>
-        @Html.DisplayFor(model => model.InvoiceDate)
+        @Html.DisplayFor(model => model.Cliente)
     </dd>
     <dt>
-        @Html.DisplayNameFor(model => model.InvoiceNumber)
+        @Html.DisplayNameFor(model => model.InvoiceNumber):
     </dt>
     <dd>
         @Html.DisplayFor(model => model.InvoiceNumber)
     </dd>
     <dt>
-        @Html.DisplayNameFor(model => model.Remarks)
+        @Html.DisplayNameFor(model => model.InvoiceDate):
     </dt>
     <dd>
-        @Html.DisplayFor(model => model.Remarks)
+        @Html.DisplayFor(model => model.InvoiceDate)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Details):
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Details)
     </dd>
 </dl>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form method="post" name="editForm" id="editForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group-sm">
-                <label asp-for="Cliente" class="control-label"></label>
-                <input asp-for="Cliente" class="form-control" readonly />
-                <span asp-validation-for="Cliente" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="form-group-sm">
-                <label asp-for="Details" class="control-label"></label>
-                <textarea asp-for="Details" class="form-control"></textarea>
-                <span asp-validation-for="Details" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="form-group-sm">
-                <label asp-for="InvoiceDate" class="control-label"></label>
-                <input asp-for="InvoiceDate" class="form-control" readonly />
-                <span asp-validation-for="InvoiceDate" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="form-group-sm">
-                <label asp-for="InvoiceNumber" class="control-label"></label>
-                <input asp-for="InvoiceNumber" class="form-control" readonly />
-                <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="form-group-sm">
+            <input type="hidden" asp-for="InvoiceDate" />
+            <input type="hidden" asp-for="InvoiceNumber" />
+            <input type="hidden" asp-for="InvoiceSystem" />
+            <input type="hidden" asp-for="InvoiceUser" />
+            <input type="hidden" asp-for="Details" />
+            <input type="hidden" asp-for="Client" />
+            <input type="hidden" asp-for="Cliente" />
+            <input type="hidden" asp-for="Port" />
+            <input type="hidden" asp-for="Adjuntos" />
+            <input type="hidden" asp-for="Puertos" />
+
+            @*<div class="form-group-sm">
+                    <label asp-for="InvoiceDate" class="control-label"></label>
+                    <input asp-for="InvoiceDate" class="form-control" readonly />
+                    <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+                </div>
+                <br />*@
+            <div class="form-group">
                 <label asp-for="PuertoId" class="control-label"></label>
                 <select asp-for="PuertoId" asp-items="Model.Puertos" class="form-control"></select>
                 <span asp-validation-for="PuertoId" class="text-danger"></span>
             </div>
-            <br />
-            <div class="form-group-sm">
+            <div class="form-group">
                 <label asp-for="Remarks" class="control-label"></label>
                 <textarea asp-for="Remarks" class="form-control"></textarea>
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
-            <br />
             <div class="form-group-sm">
-                <input type="submit" value="Guardar" class="btn btn-default" />
+                <input type="button" value="Guardar" class="btn btn-default" id="btnSave" />
             </div>
         </form>
+
     </div>
     <div class="col-md-6">
         <div class="form-group-sm">
             <label asp-for="Adjuntos" class="control-label"></label>
         </div>
-        <form asp-action="AddFile" enctype="multipart/form-data" class="dropzone">
+        @*<form asp-action="AddFile" enctype="multipart/form-data" class="dropzone needsclick dz-clickable" id="uploader">
+                <div class="fallback">
+                    <input type="file" name="file" />
+                </div>
+                <div class="text-center">
+                    <i class="glyphicon glyphicon-cloud-upload gi-2x"></i>
+                    <h3 class="dz-message">Arrastre sus adjuntos aquí</h3>
+                </div>
 
-            <div class="text-center">
-                <i class="glyphicon glyphicon-cloud-upload gi-2x"></i>
-                <h3 class="dz-message">Arrastre sus adjuntos aquí</h3>
+            </form>*@
+        <form asp-action="AddFileAsync" class="dropzone dz-clickable" id="uploader" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="InvoiceNumber" id="invoiceNumber1" />
+            <input type="hidden" asp-for="PuertoId" id="puertoId1" />
+            <input type="hidden" name="uploadtid" id="uploadtid" value="1">
+            <div class="dz-message">
+                <div class="icon">
+                    <i class="glyphicon glyphicon-cloud-upload gi-3x text-info" id="cloudIcon"></i>
+                    <h3>Coloca tus adjuntos aquí</h3>
+                    <span class="note">No hay archivos seleccionados</span>
+                </div>
             </div>
             <div class="fallback">
                 <input type="file" name="file" />
@@ -97,4 +112,77 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            var $element = $("#cloudIcon");
+            setInterval(function () {
+                $element.fadeIn(500, function () {
+                    $element.fadeOut(500, function () {
+                        $element.fadeIn(500)
+                    });
+                });
+            }, 500);
+            $("#btnSave").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/Facturas/Edit',     //your action
+                    data: $('#editForm').serialize(),   //your form name.it takes all the values of model
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result) {
+
+                            var result1 = uploadFiles();
+                            if (result1) {
+                                alert("Guardado satisfactoriamente");
+                                window.location.href = '/Facturas';
+                            }
+
+                            // myDropzone.processQueue();
+                        }
+                    }
+                })
+                return false;
+            });
+        });
+
+        //function fadeInIcon() {
+        //    $("#cloudIcon").fadeIn(2000, fadeOutIcon())
+        //}
+
+        //function fadeOutIcon() {
+        //     $("#cloudIcon").fadeOut(2000, fadeOutIcon())
+        //}
+
+        Dropzone.options.uploader = {
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            maxFilesize: 10,
+            maxFiles: 10,
+            parallelUploads: 10,
+            uploadMultiple: true,
+            init: function () {
+                myDropzone = this;
+            }
+
+        };
+
+        function uploadFiles() {
+            myDropzone.processQueue();
+            return true;
+        }
+                                                //Dropzone.options.dropzoneForm = {
+                                                //    autoProcessQueue:false,
+                                                //    addRemoveLinks: true,
+                                                //    maxFilesize: 10,
+                                                //    maxFiles: 10,
+                                                //    parallelUploads: 10,
+                                                //    init:function(){
+                                                //        var submitButton = document.querySelector("#subir_btn");
+                                                //        myDropzone = this;
+                                                //        submitButton.addEventListener("click",function(){
+                                                //            myDropzone.processQueue();
+                                                //        });
+                                                //    }
+                                                //};
+    </script>
 }

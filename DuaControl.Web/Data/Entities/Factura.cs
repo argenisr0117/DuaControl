@@ -11,7 +11,6 @@ namespace DuaControl.Web.Data.Entities
         //Relationship between Factura and Adjuntos
         public ICollection<Adjunto> Adjuntos { get; set; }
 
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public Cliente Client { get; set; }
         public int Id { get; set; }
 
@@ -29,7 +28,6 @@ namespace DuaControl.Web.Data.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string InvoiceNumber { get; set; }
 
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public Puerto Port { get; set; } 
 
         [Display(Name = "Comentarios")]

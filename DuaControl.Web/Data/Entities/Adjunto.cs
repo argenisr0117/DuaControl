@@ -12,9 +12,9 @@ namespace DuaControl.Web.Data.Entities
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime RegisterDate { get; set; }
 
-        [Display(Name = "Fecha Registro")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm tt}", ApplyFormatInEditMode = true)]
-        public DateTime RegisterDateLocal => RegisterDate.ToLocalTime();
+        //[Display(Name = "Fecha Registro")]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm tt}", ApplyFormatInEditMode = true)]
+        //public DateTime RegisterDateLocal => RegisterDate.ToLocalTime();
 
         //Relationship between History and Pet
         public string User { get; set; }

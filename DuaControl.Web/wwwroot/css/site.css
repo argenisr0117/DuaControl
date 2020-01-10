@@ -52,3 +52,13 @@ body {
 .gi-5x {
     font-size: 5em;
 }
+
+.dl-personalize dt {
+    width: 140px;
+    text-align: left;
+    font-size: 15px;
+}
+
+.dl-personalize dd {
+    margin-left: 140px;
+}
