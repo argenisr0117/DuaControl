@@ -37,6 +37,9 @@ body {
 }
 
 /*glyphicon size*/
+.gi-06x {
+    font-size: 0.625em;
+}
 .gi-2x {
     font-size: 2em;
 }
@@ -61,4 +64,19 @@ body {
 
 .dl-personalize dd {
     margin-left: 140px;
+}
+
+.btn-sm-p{
+    cursor:pointer;
+}
+
+/*LIST FILES*/
+.panel-p{
+    width:180px;
+    float:left;
+    margin-right:5px;
+}
+
+.panel-heading-p {
+    padding: 5px 5px;
 }

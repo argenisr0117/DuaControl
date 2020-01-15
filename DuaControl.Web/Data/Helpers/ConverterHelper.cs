@@ -45,6 +45,7 @@ namespace DuaControl.Web.Data.Helpers
                 Client =factura.Client,
                 ClienteId=factura.Client.ClienteId,
                 Port = factura.Port,
+                Adjuntos=factura.Adjuntos,
                 //Id = model.Id == 0 ? null :model.Id,
                 InvoiceUser = factura.InvoiceUser,
                 Cliente = factura.Client.Name,

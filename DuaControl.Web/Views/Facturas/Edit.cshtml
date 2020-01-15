@@ -33,8 +33,38 @@
     <dd>
         @Html.DisplayFor(model => model.Details)
     </dd>
-</dl>
+    <dt>
+        @Html.DisplayNameFor(model => model.InvoiceUser):
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.InvoiceUser)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Adjuntos):
+    </dt>
 
+</dl>
+<div class="container-fluid">
+    @foreach (var item in Model.Adjuntos)
+    {
+
+        @if (!string.IsNullOrEmpty(item.DocumentUrl))
+        {
+            string[] pathFile = item.DocumentUrl.Split('\\');
+            <div class="panel panel-default panel-p text-center">
+                <div class="panel-heading panel-heading-p text-right">
+                    <a data-id="@item.Id" class="btn-sm-p text-muted deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Eliminar"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+                <a href='https://localhost:44305/uploads/@Model.InvoiceNumber/@pathFile[pathFile.Length - 1].ToString()' target="_blank">
+                    <div class="panel-body">
+                        <i class="glyphicon glyphicon-file gi-2x text-muted"></i>
+                    </div>
+                    <div class="panel-footer">@pathFile[pathFile.Length - 1].ToString()</div>
+                </a>
+            </div>
+        }
+    }
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -69,7 +99,8 @@
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
             <div class="form-group-sm">
-                <input type="button" value="Guardar" class="btn btn-default" id="btnSave" />
+                <button type="button" title="Guardar" class="btn btn-primary" id="btnSave"><i class="glyphicon glyphicon-ok"></i></button>
+                <a asp-action="Index" class="btn btn-success" title="Volver atrás"><i class="glyphicon glyphicon-arrow-left"></i></a>
             </div>
         </form>
 
@@ -78,24 +109,15 @@
         <div class="form-group-sm">
             <label asp-for="Adjuntos" class="control-label"></label>
         </div>
-        @*<form asp-action="AddFile" enctype="multipart/form-data" class="dropzone needsclick dz-clickable" id="uploader">
-                <div class="fallback">
-                    <input type="file" name="file" />
-                </div>
-                <div class="text-center">
-                    <i class="glyphicon glyphicon-cloud-upload gi-2x"></i>
-                    <h3 class="dz-message">Arrastre sus adjuntos aquí</h3>
-                </div>
-
-            </form>*@
         <form asp-action="AddFileAsync" class="dropzone dz-clickable" id="uploader" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="InvoiceNumber" id="invoiceNumber1" />
             <input type="hidden" asp-for="PuertoId" id="puertoId1" />
+            <input type="hidden" asp-for="Id" id="facturaId" />
             <input type="hidden" name="uploadtid" id="uploadtid" value="1">
             <div class="dz-message">
                 <div class="icon">
                     <i class="glyphicon glyphicon-cloud-upload gi-3x text-info" id="cloudIcon"></i>
-                    <h3>Coloca tus adjuntos aquí</h3>
+                    <h3 id="test">Coloca tus adjuntos aquí</h3>
                     <span class="note">No hay archivos seleccionados</span>
                 </div>
             </div>
@@ -105,15 +127,17 @@
         </form>
     </div>
 </div>
-
 <div>
-    <a asp-action="Index">Back to List</a>
+
+    @*<a class="btn btn-danger" onclick="AlertTest()">Test</a>*@
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $(document).ready(function () {
+
+            //alertify.defaults.transition = "slide";
             var $element = $("#cloudIcon");
             setInterval(function () {
                 $element.fadeIn(500, function () {
@@ -130,27 +154,53 @@
                     dataType: 'json',
                     success: function (result) {
                         if (result) {
-
                             var result1 = uploadFiles();
                             if (result1) {
-                                alert("Guardado satisfactoriamente");
-                                window.location.href = '/Facturas';
+                                alertify.alert().destroy();
+                                alertify.defaults.theme.ok = "btn btn-primary";
+                                var alert = alertify.alert('Dua Control', 'Guardado satisfactoriamente!');
+                                alert.set('onok', function () {
+                                    location.href = '/Facturas';
+                                });
                             }
-
-                            // myDropzone.processQueue();
                         }
                     }
                 })
                 return false;
             });
+
+
+            var item_to_delete;
+            $('.deleteItem').click((e) => {
+                alertify.alert().destroy();
+                alertify.defaults.theme.ok = "btn btn-danger";
+                alertify.defaults.theme.cancel = "btn btn-primary";
+                item_to_delete = e.currentTarget.dataset.id;
+                //alertify.confirm('Desea eliminar el adjunto?').setting({ 'modal': true, 'closable': false });
+                alertify.confirm('Desea eliminar el adjunto?').setHeader("Dua Control").setting({
+                    'labels': {
+                        ok: 'Si',
+                        cancel: 'No'
+                    },
+                    'reverseButtons': true,
+                    'closable': true,
+                    'onok': function () {
+                        window.location.href = '/Facturas/DeleteFile/' + item_to_delete;
+                        alertify.alert().destroy();
+                        alertify.defaults.theme.ok = "btn btn-primary";
+                        alertify.alert('Se eliminara el adjunto #:' + item_to_delete);
+                    },
+                    'oncancel': function () {
+                        return true;
+                    }
+                });
+            });
         });
 
-        //function fadeInIcon() {
-        //    $("#cloudIcon").fadeIn(2000, fadeOutIcon())
-        //}
+        //function AlertTest() {
 
-        //function fadeOutIcon() {
-        //     $("#cloudIcon").fadeOut(2000, fadeOutIcon())
+        //location.href = '/Facturas';
+
         //}
 
         Dropzone.options.uploader = {
@@ -170,19 +220,5 @@
             myDropzone.processQueue();
             return true;
         }
-                                                //Dropzone.options.dropzoneForm = {
-                                                //    autoProcessQueue:false,
-                                                //    addRemoveLinks: true,
-                                                //    maxFilesize: 10,
-                                                //    maxFiles: 10,
-                                                //    parallelUploads: 10,
-                                                //    init:function(){
-                                                //        var submitButton = document.querySelector("#subir_btn");
-                                                //        myDropzone = this;
-                                                //        submitButton.addEventListener("click",function(){
-                                                //            myDropzone.processQueue();
-                                                //        });
-                                                //    }
-                                                //};
     </script>
 }

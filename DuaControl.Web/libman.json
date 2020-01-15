@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "filesystem",
+  "libraries": [
+    {
+      "library": "../../../../Users/rosariar/Downloads/alertifyjs/",
+      "destination": "wwwroot/lib/alertifyjs/",
+      "files": [
+        "alertify.js",
+        "alertify.min.js"
+      ]
+    },
+    {
+      "library": "../../../Users/rosariar/Downloads/alertifyjs/css/",
+      "destination": "wwwroot/lib/alertifyjs/css"
+    },
+    {
+      "library": "../../../Users/rosariar/Downloads/alertifyjs/css/themes/",
+      "destination": "wwwroot/lib/alertifyjs/css/themes"
+    }
+  ]
+}

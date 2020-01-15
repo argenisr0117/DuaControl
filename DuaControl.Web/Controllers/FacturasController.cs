@@ -73,6 +73,7 @@ namespace DuaControl.Web.Controllers
             var factura = await _context.Facturas
                 .Include(f => f.Client)
                 .Include(f => f.Port)
+                .Include(f => f.Adjuntos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (factura == null)
             {
@@ -124,7 +125,7 @@ namespace DuaControl.Web.Controllers
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
-                var path = Path.Combine(_environment.WebRootPath, @"uploads\"+model.InvoiceNumber);
+                var path = Path.Combine(_environment.WebRootPath, @"uploads\" + model.InvoiceNumber);
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -135,9 +136,26 @@ namespace DuaControl.Web.Controllers
                     {
                         if (file.Length > 0)
                         {
+                            var completePath = Path.Combine(@path, file.FileName);
                             using (var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
                             {
+                                //Verify if there's already a file with the same name on this folder.
+                                if (Directory.Exists(completePath))
+                                {
+                                    //Delete the file and then save the new one.
+                                    Directory.Delete(completePath);
+                                }
                                 await file.CopyToAsync(fileStream);
+
+                               var adjunto = new Adjunto
+                                {
+                                    RegisterDate = DateTime.Now,
+                                    User = "gomezjos",
+                                    DocumentUrl = completePath,
+                                    Factura = await _context.Facturas.FirstOrDefaultAsync(f => f.Id == model.Id)
+                                };
+                                _context.Adjuntos.Add(adjunto);
+                                await _context.SaveChangesAsync();
                             }
                         }
                     }
@@ -147,6 +165,32 @@ namespace DuaControl.Web.Controllers
             }
             return RedirectToAction($"Edit/{model.Id}");
             //return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> DeleteFile(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var adjunto = await _context.Adjuntos
+                .FirstOrDefaultAsync(a => a.Id == id.Value);
+            if (adjunto == null)
+            {
+                return NotFound();
+            }
+            var fileName = Path.GetFileName(adjunto.DocumentUrl);
+            if (Directory.Exists(adjunto.DocumentUrl))
+            {
+                //Delete the file and then save the new one.
+                Directory.Delete(adjunto.DocumentUrl);
+            }
+
+            _context.Adjuntos.Remove(adjunto);
+            await _context.SaveChangesAsync();
+            return new JsonResult(true);
+            //return RedirectToAction($"{nameof(DetailsPet)}/{history.Pet.Id}");
         }
     }
 }
