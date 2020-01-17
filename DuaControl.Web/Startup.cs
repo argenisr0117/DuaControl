@@ -67,7 +67,7 @@ namespace DuaControl.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Facturas}/{action=Index}/{id?}");
             });
 
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("es-DO");

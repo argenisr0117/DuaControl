@@ -12,7 +12,7 @@
         @Html.DisplayNameFor(model => model.Cliente):
     </dt>
     <dd>
-        @Html.DisplayFor(model => model.Cliente)
+        @Html.DisplayFor(model => model.ClienteId) - @Html.DisplayFor(model => model.Cliente)
     </dd>
     <dt>
         @Html.DisplayNameFor(model => model.InvoiceNumber):
@@ -42,6 +42,12 @@
     <dt>
         @Html.DisplayNameFor(model => model.Adjuntos):
     </dt>
+    @if (Model.Adjuntos.Count <= 0)
+    {
+        <dd>
+            No hay adjuntos.
+        </dd>
+    }
 
 </dl>
 <div class="container-fluid">
@@ -50,16 +56,16 @@
 
         @if (!string.IsNullOrEmpty(item.DocumentUrl))
         {
-            string[] pathFile = item.DocumentUrl.Split('\\');
+            //string[] pathFile = item.DocumentUrl.Split('\\');
             <div class="panel panel-default panel-p text-center">
                 <div class="panel-heading panel-heading-p text-right">
                     <a data-id="@item.Id" class="btn-sm-p text-muted deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Eliminar"><i class="glyphicon glyphicon-remove"></i></a>
                 </div>
-                <a href='https://localhost:44305/uploads/@Model.InvoiceNumber/@pathFile[pathFile.Length - 1].ToString()' target="_blank">
+                <a href='https://localhost:44305/uploads/@Model.InvoiceNumber/@item.DocumentName' target="_blank">
                     <div class="panel-body">
                         <i class="glyphicon glyphicon-file gi-2x text-muted"></i>
                     </div>
-                    <div class="panel-footer">@pathFile[pathFile.Length - 1].ToString()</div>
+                    <div class="panel-footer">@item.DocumentName</div>
                 </a>
             </div>
         }
@@ -185,7 +191,7 @@
                     'reverseButtons': true,
                     'closable': true,
                     'onok': function () {
-                        window.location.href = '/Facturas/DeleteFile/' + item_to_delete;
+                        window.location.href = '/Facturas/DeleteFileAsync/' + item_to_delete;
                         alertify.alert().destroy();
                         alertify.defaults.theme.ok = "btn btn-primary";
                         alertify.alert('Se eliminara el adjunto #:' + item_to_delete);

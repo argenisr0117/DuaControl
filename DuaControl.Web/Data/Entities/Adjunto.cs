@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DuaControl.Web.Data.Entities
 {
@@ -16,8 +17,13 @@ namespace DuaControl.Web.Data.Entities
         //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm tt}", ApplyFormatInEditMode = true)]
         //public DateTime RegisterDateLocal => RegisterDate.ToLocalTime();
 
-        //Relationship between History and Pet
+        [Column(TypeName = "VARCHAR(20)")]
+        [MaxLength(20)]
         public string User { get; set; }
+
+        [Column(TypeName = "VARCHAR(120)")]
+        [MaxLength(120)]
+        public string DocumentName { get; set; }
 
         public Factura Factura { get; set; }
 

@@ -31,9 +31,9 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" class="btn btn-sm btn-default" asp-route-id="@item.Id" title="Edit"><i class="glyphicon glyphicon-pencil"></i> </a>
-                                    <a asp-action="Details" class="btn btn-sm btn-default" asp-route-id="@item.Id" title="Details"><i class="glyphicon glyphicon-list"> </i> </a>
-                                    <button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>
+                                    <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id"><i class="glyphicon-pencil" title="Edit"></i> </a>
+                                    <a asp-action="Details" class="btn btn-sm btn-info" asp-route-id="@item.Id"><i class="glyphicon glyphicon-list" title="Details"> </i> </a>
+                                    @*<button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>*@
                                 </td>
                             </tr>
                         }

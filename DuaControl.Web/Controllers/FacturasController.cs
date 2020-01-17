@@ -122,36 +122,42 @@ namespace DuaControl.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFileAsync(FacturaViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var files = HttpContext.Request.Form.Files;
-                var path = Path.Combine(_environment.WebRootPath, @"uploads\" + model.InvoiceNumber);
-                if (!Directory.Exists(path))
+                if (ModelState.IsValid)
                 {
-                    Directory.CreateDirectory(path);
-                }
-                if (files.Count > 0)
-                {
-                    foreach (var file in files)
+                    var files = HttpContext.Request.Form.Files;
+                    var path = Path.Combine(_environment.WebRootPath, @"uploads\" + model.InvoiceNumber);
+                    if (!Directory.Exists(path))
                     {
-                        if (file.Length > 0)
+                        Directory.CreateDirectory(path);
+                    }
+                    if (files.Count > 0)
+                    {
+                        foreach (var file in files)
                         {
-                            var completePath = Path.Combine(@path, file.FileName);
-                            using (var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
+                            if (file.Length > 0)
                             {
-                                //Verify if there's already a file with the same name on this folder.
-                                if (Directory.Exists(completePath))
+                                if (System.IO.File.Exists(path + @"\" + file.FileName))
                                 {
-                                    //Delete the file and then save the new one.
-                                    Directory.Delete(completePath);
+                                    var adjunto1 = await _context.Adjuntos.FirstOrDefaultAsync(a => a.DocumentName.Trim() == file.FileName.Trim());
+                                    if (adjunto1 != null)
+                                    {
+                                        await DeleteFileAsync(adjunto1.Id);
+                                    }
                                 }
-                                await file.CopyToAsync(fileStream);
+                                //var completePath = Path.Combine(@path, file.FileName);
+                                using (var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
+                                {
+                                    await file.CopyToAsync(fileStream);
+                                }
 
-                               var adjunto = new Adjunto
+                                var adjunto = new Adjunto
                                 {
                                     RegisterDate = DateTime.Now,
                                     User = "gomezjos",
-                                    DocumentUrl = completePath,
+                                    DocumentUrl = path,
+                                    DocumentName = file.FileName,
                                     Factura = await _context.Facturas.FirstOrDefaultAsync(f => f.Id == model.Id)
                                 };
                                 _context.Adjuntos.Add(adjunto);
@@ -162,12 +168,16 @@ namespace DuaControl.Web.Controllers
 
                     return new JsonResult(true);
                 }
+
+            }
+            catch (Exception)
+            {
+                return RedirectToAction(nameof(Index));
             }
             return RedirectToAction($"Edit/{model.Id}");
-            //return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> DeleteFile(int? id)
+        public async Task<IActionResult> DeleteFileAsync(int? id)
         {
             if (id == null)
             {
@@ -175,22 +185,22 @@ namespace DuaControl.Web.Controllers
             }
 
             var adjunto = await _context.Adjuntos
+                .Include(a => a.Factura)
                 .FirstOrDefaultAsync(a => a.Id == id.Value);
             if (adjunto == null)
             {
                 return NotFound();
             }
-            var fileName = Path.GetFileName(adjunto.DocumentUrl);
-            if (Directory.Exists(adjunto.DocumentUrl))
+
+            if (System.IO.File.Exists(adjunto.DocumentUrl + @"\" + adjunto.DocumentName))
             {
-                //Delete the file and then save the new one.
-                Directory.Delete(adjunto.DocumentUrl);
+                System.IO.File.Delete(adjunto.DocumentUrl + @"\" + adjunto.DocumentName);
             }
 
             _context.Adjuntos.Remove(adjunto);
             await _context.SaveChangesAsync();
-            return new JsonResult(true);
-            //return RedirectToAction($"{nameof(DetailsPet)}/{history.Pet.Id}");
+            //return new JsonResult(true);
+            return RedirectToAction($"{nameof(Edit)}/{adjunto.Factura.Id}");
         }
     }
 }
