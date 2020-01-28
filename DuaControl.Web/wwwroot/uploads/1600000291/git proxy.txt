@@ -1,7 +1,0 @@
-[user]
-	name = argenisr0117
-	email = argenis0117@hotmail.com
-[http]
-	proxy = http://soportet:S%40p%40rt3T9@isaserver.lafabril.com.do:8080
-[url "https://github.com/"]
-	insteadOf = git@github.com

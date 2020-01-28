@@ -3,42 +3,42 @@
 @{
     ViewData["Title"] = "Puertos";
 }
-
-@*<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />*@
+<h2>Puertos</h2>
 <br />
-
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Puertos</h3>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Listado de Puertos</h6>
             </div>
-            <div class="panel-body">
-                <table class="table table-hover table-responsive" id="MyTable">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Name)
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="MyTable" width="100%" cellspacing="0">
+                        <thead>
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id"><i class="glyphicon-pencil" title="Edit"></i> </a>
-                                    <a asp-action="Details" class="btn btn-sm btn-info" asp-route-id="@item.Id"><i class="glyphicon glyphicon-list" title="Details"> </i> </a>
-                                    @*<button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>*@
-                                </td>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>Acciones</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id" title="Editar"><i class="fa fa-edit c-white"></i></a>
+                                        <a asp-action="Create" class="btn btn-sm btn-primary" title="Nuevo"><i class="fa fa-plus c-white"></i> </a>
+                                        @*<button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -51,6 +51,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#MyTable').DataTable();
+            $('#example').DataTable();
             // Delete item
             var item_to_delete;
 

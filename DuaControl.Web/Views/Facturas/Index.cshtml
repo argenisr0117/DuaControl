@@ -3,85 +3,88 @@
 @{
     ViewData["Title"] = "Facturas";
 }
-    @*<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />*@
-<br />
+@*<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />*@
 <h2>Facturas</h2>
+<br />
 
 <div class="row">
     <div class="col-md-12 col-sm-12 col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"></h3>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Listado de Facturas</h6>
             </div>
-            <div class="panel-body">
-                <table class="table table-hover table-responsive" id="MyTable">
-                    <thead>
-                        <tr>
-                            <th>@Html.DisplayNameFor(model => model.InvoiceNumber)</th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.InvoiceDate)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Client.ClienteId)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Client.Name)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Client.BusinessName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Port.Name)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Details)
-                            </th>
-                            <th>
-                                Adjuntos
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Remarks)
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.InvoiceNumber)</td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.InvoiceDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Client.ClienteId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Client.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Client.BusinessName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Port.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Details)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Adjuntos.Count)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Remarks)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id"><i class="glyphicon-pencil" title="Edit"></i> </a>
-                                <a asp-action="Details" class="btn btn-sm btn-info" asp-route-id="@item.Id"><i class="glyphicon glyphicon-list" title="Details"> </i> </a>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="MyTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.InvoiceNumber)</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.InvoiceDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Client.ClienteId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Client.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Client.BusinessName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Port.Name)
+                                </th>
+                                @*<th>
+                        @Html.DisplayNameFor(model => model.Details)
+                    </th>*@
+                                <th>
+                                    Adjuntos
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Remarks)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.InvoiceNumber)</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.InvoiceDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Client.ClienteId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Client.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Client.BusinessName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Port.Name)
+                                    </td>
+                                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Details)
+                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Adjuntos.Count)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Remarks)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id" title="Editar"><i class="far fa-edit c-white"></i> </a>
+                                        <a asp-action="Details" class="btn btn-sm btn-primary" asp-route-id="@item.Id" title="Detalles"><i class="fas fa-list c-white"> </i> </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <br />
+                </div>
             </div>
         </div>
     </div>
