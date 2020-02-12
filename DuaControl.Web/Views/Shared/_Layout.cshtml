@@ -60,16 +60,24 @@
                     <span>Puertos</span>
                 </a>
             </li>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Empleados"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Account" asp-action="Index">
+                        <i class="fas fa-fw fa-user-alt"></i>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+            }
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-        </ul>
+            </ul>
         <!-- End of Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
@@ -89,7 +97,7 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                                 <img class="img-profile rounded-circle">
                             </a>
                             <!-- Dropdown - User Information -->

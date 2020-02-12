@@ -149,5 +149,11 @@ namespace DuaControl.Web.Controllers
         {
             return _context.Puertos.Any(e => e.Id == id);
         }
+
+        [AcceptVerbs("GET", "POST")]
+        public async Task<IActionResult> VerifyPort(string Name)
+        {
+            return Json(await _context.Puertos.FirstOrDefaultAsync(p => p.Name == Name) == null ? (object)true : $"El puerto {Name} ya existe.");
+        }
     }
 }

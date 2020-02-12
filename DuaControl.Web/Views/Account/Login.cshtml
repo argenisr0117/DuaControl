@@ -1,0 +1,54 @@
+﻿@model DuaControl.Web.Models.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html style="height:100%">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="~/logo.ico">
+    <title>Login - Dua Control</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @*<link rel="stylesheet" href="~/lib/jquery-datatables/css/datatables.css" />*@
+    <link rel="stylesheet" href="~/lib/alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="~/lib/alertifyjs/css/themes/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+</head>
+<body class="text-center loginbody">
+    <form class="form-signin" method="post">
+        <img class="mb-4" src="~/lafabril.png" alt="">
+        <h1 class="h3 mb-3 font-weight-bolder text-muted">DuaControl - Login</h1>
+        <hr />
+        <label for="inputEmail" class="sr-only">Usuario</label>
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-user-alt"></i></span>
+                </div>
+                <input type="text" asp-for="DomainUser" class="form-control" title="Usuario" placeholder="Usuario" autofocus="">
+            </div>
+            <span asp-validation-for="DomainUser" class="text-warning"></span>
+        </div>
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-key"></i></span>
+                </div>
+                <input type="password" asp-for="Password" class="form-control" title="Contraseña" placeholder="Contraseña">
+            </div>
+            <span asp-validation-for="Password" class="text-warning"></span>
+        </div>
+        <button class="btn btn-lg loginbtn btn-block font-weight-bolder" type="submit" title="Acceder">Acceder</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020 - @DateTime.Now.Year - Dua Control by La Fabril C por A.</p>
+    </form>
+</body>
+</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

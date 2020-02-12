@@ -13,6 +13,5 @@ namespace DuaControl.Web.Data
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Factura> Facturas { get; set; }
         public DbSet<Puerto> Puertos { get; set; }
-
     }
 }

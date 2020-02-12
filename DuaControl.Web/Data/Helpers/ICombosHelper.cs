@@ -6,5 +6,6 @@ namespace DuaControl.Web.Data.Helpers
     public interface ICombosHelper
     {
         IEnumerable<SelectListItem> GetComboPorts();
+        IEnumerable<SelectListItem> GetComboRoles();
     }
 }
