@@ -11,7 +11,7 @@ namespace DuaControl.Web.Models
     public class AddUserViewModel : User
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string RoleId { set; get; }
+        public int RoleId { set; get; }
         public IEnumerable<SelectListItem> RolesList { get; set; }
     }
 }

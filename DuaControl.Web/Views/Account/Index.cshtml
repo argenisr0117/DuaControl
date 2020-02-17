@@ -7,6 +7,9 @@
 <br />
 <div class="row">
     <div class="col-md-12">
+        <div class="mb-2">
+            <a asp-action="AddUser" class="btn btn btn-primary" title="Nuevo">Nuevo <i class="fa fa-plus c-white"></i> </a>
+        </div>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Listado de Usuarios</h6>
@@ -17,10 +20,16 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.FullName)
+                                    @Html.DisplayNameFor(model => model.FirstName)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.DomainUser)
+                                    @Html.DisplayNameFor(model => model.LastName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UserName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.IsActive)
                                 </th>
                                 <th>Acciones</th>
                             </tr>
@@ -28,19 +37,25 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FullName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DomainUser)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id" title="Editar"><i class="fa fa-edit c-white"></i></a>
-                                    <a asp-action="AddUser" class="btn btn-sm btn-primary" title="Nuevo"><i class="fa fa-plus c-white"></i> </a>
-                                    @*<button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>*@
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FirstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LastName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsActive)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id" title="Editar"><i class="fa fa-edit c-white"></i></a>
+                                        @*<a asp-action="AddUser" class="btn btn-sm btn-primary" title="Nuevo"><i class="fa fa-plus c-white"></i> </a>*@
+                                        @*<button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog" title="Delete"><i class="glyphicon glyphicon-trash"></i></button>*@
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -59,14 +74,6 @@
             $('#MyTable').DataTable();
             $('#example').DataTable();
             // Delete item
-            var item_to_delete;
-
-            $('.deleteItem').click((e) => {
-                item_to_delete = e.currentTarget.dataset.id;
-            });
-
-            $("#btnYesDelete").click(function () {
-                window.location.href = '/Pets/Delete/' + item_to_delete;
             });
         });
     </script>

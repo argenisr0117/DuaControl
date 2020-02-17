@@ -12,26 +12,32 @@ using DuaControl.Web.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using DuaControl.Web.Security;
 
 namespace DuaControl.Web.Controllers
 {
+    [Authorize]
     public class FacturasController : Controller
     {
         private readonly DataContext _context;
         private readonly IConverterHelper _converterHelper;
         private readonly ICombosHelper _combosHelper;
         private readonly IHostingEnvironment _environment;
+        private readonly IUserSession _userSession;
 
         public FacturasController(
             DataContext context,
             IConverterHelper converterHelper,
             ICombosHelper combosHelper,
-            IHostingEnvironment environment)
+            IHostingEnvironment environment,
+            IUserSession userSession)
         {
             _context = context;
             _converterHelper = converterHelper;
             _combosHelper = combosHelper;
             _environment = environment;
+            _userSession = userSession;
         }
 
         // GET: Facturas
@@ -155,7 +161,7 @@ namespace DuaControl.Web.Controllers
                                 var adjunto = new Adjunto
                                 {
                                     RegisterDate = DateTime.Now,
-                                    User = "gomezjos",
+                                    User = _userSession.UserName,
                                     DocumentUrl = path,
                                     DocumentName = file.FileName,
                                     Factura = await _context.Facturas.FirstOrDefaultAsync(f => f.Id == model.Id)
@@ -165,10 +171,8 @@ namespace DuaControl.Web.Controllers
                             }
                         }
                     }
-
                     return new JsonResult(true);
                 }
-
             }
             catch (Exception)
             {
@@ -177,6 +181,7 @@ namespace DuaControl.Web.Controllers
             return RedirectToAction($"Edit/{model.Id}");
         }
 
+        [Authorize(Policy =Constants.RoleNames.Administrator)]
         public async Task<IActionResult> DeleteFileAsync(int? id)
         {
             if (id == null)

@@ -1,7 +1,6 @@
 ﻿using DuaControl.Web.Data.Entities;
 using DuaControl.Web.Data.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,20 +9,22 @@ namespace DuaControl.Web.Data
     public class SeedDb
     {
         private readonly DataContext _dataContext;
-        private readonly IUserHelper _userHelper;
+        private readonly IRoleHelper _roleHelper;
 
         public SeedDb(
             DataContext context,
-            IUserHelper userHelper)
+            IRoleHelper roleHelper)
         {
             _dataContext = context;
-            _userHelper = userHelper;
+            _roleHelper = roleHelper;
         }
+
         public async Task SeedAsync()
         {
             await _dataContext.Database.EnsureCreatedAsync();
             await CheckPortsAsync();
-            await CheckRoles();
+            await CheckRolesAsync();
+            await CheckUserAsync();
             //await CheckAgendasAsync();
         }
 
@@ -39,11 +40,35 @@ namespace DuaControl.Web.Data
                 await _dataContext.SaveChangesAsync();
             }
         }
-        private async Task CheckRoles()
+
+        private async Task CheckRolesAsync()
         {
-            await _userHelper.CheckRoleAsync("Admin");
-            await _userHelper.CheckRoleAsync("SuperUser");
-            await _userHelper.CheckRoleAsync("User");
+            if (!_dataContext.Roles.Any())
+            {
+                _dataContext.Roles.Add(new Role { Name = "Admin" });
+                _dataContext.Roles.Add(new Role { Name = "SuperUser" });
+                _dataContext.Roles.Add(new Role { Name = "User" });
+                await _dataContext.SaveChangesAsync();
+            }
+            //await _roleHelper.CheckRoleAsync("Admin");
+            //await _roleHelper.CheckRoleAsync("SuperUser");
+            //await _roleHelper.CheckRoleAsync("User");
+        }
+
+        private async Task CheckUserAsync()
+        {
+            if (!_dataContext.Users.Any())
+            {
+                _dataContext.Users.Add(new User { UserName = "soportet", FirstName = "Soporte", LastName = "Técnico", IsActive = true, LastLoginDate = DateTime.Now, CreatedOn = DateTime.Now, CreatedBy = "soportet", ModifiedOn = DateTime.Now, ModifiedBy = "soportet" });
+                await _dataContext.SaveChangesAsync();
+                var user = _dataContext.Users.FirstOrDefault();
+                var role = _dataContext.Roles.FirstOrDefault(r => r.Name == "Admin");
+                _dataContext.UserRoles.Add(new UserRole { Role = role, User = user });
+                await _dataContext.SaveChangesAsync();
+            }
+            //await _roleHelper.CheckRoleAsync("Admin");
+            //await _roleHelper.CheckRoleAsync("SuperUser");
+            //await _roleHelper.CheckRoleAsync("User");
         }
     }
 }

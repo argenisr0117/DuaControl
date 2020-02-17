@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DuaControl.Web.Data;
 using DuaControl.Web.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DuaControl.Web.Controllers
 {
+    [Authorize]
     public class PuertosController : Controller
     {
         private readonly DataContext _context;
@@ -117,33 +119,33 @@ namespace DuaControl.Web.Controllers
         }
 
         // GET: Puertos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var puerto = await _context.Puertos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (puerto == null)
-            {
-                return NotFound();
-            }
+        //    var puerto = await _context.Puertos
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (puerto == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(puerto);
-        }
+        //    return View(puerto);
+        //}
 
         // POST: Puertos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var puerto = await _context.Puertos.FindAsync(id);
-            _context.Puertos.Remove(puerto);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var puerto = await _context.Puertos.FindAsync(id);
+        //    _context.Puertos.Remove(puerto);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool PuertoExists(int id)
         {

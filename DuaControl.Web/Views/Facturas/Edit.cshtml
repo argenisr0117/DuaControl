@@ -70,7 +70,7 @@
                     <div class="card-header text-right">
                         <a data-id="@item.Id" class="btn-sm-p text-muted deleteItem" data-toggle="modal" title="Eliminar"><i class="fa fa-trash-alt"></i></a>
                     </div>
-                    <a href='https://localhost:44305/uploads/@Model.InvoiceNumber/@item.DocumentName' target="_blank">
+                    <a href='https://apps.lafabril.com.do:8088/uploads/@Model.InvoiceNumber/@item.DocumentName' target="_blank">
                         <div class="card-body">
                             <i class="fa fa-file fa-2x text-muted"></i>
                         </div>
@@ -174,7 +174,7 @@
                                 alertify.defaults.theme.ok = "btn btn-primary";
                                 var alert = alertify.alert('Dua Control', 'Guardado satisfactoriamente!');
                                 alert.set('onok', function () {
-                                    location.href = '/Facturas';
+                                    location.href = '/Facturas/Index';
                                 });
                             }
                         }

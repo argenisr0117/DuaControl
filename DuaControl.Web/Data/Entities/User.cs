@@ -1,20 +1,32 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DuaControl.Web.Data.Entities
 {
-    public class User : IdentityUser
+    public partial class User
     {
-        [Display(Name = "Usuario")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        [MaxLength(15, ErrorMessage ="El campo {0} no puede tener más de {1} caracteres.")]
-        [Remote(action: "VerifyUser", controller: "Account")]
-        public string DomainUser { get; set; }
+        public User()
+        {
+            UserRoles = new HashSet<UserRole>();
+        }
+        public int Id { get; set; }
 
+        [Required]
+        [Display(Name = "Usuario")]
+        public string UserName { get; set; }
         [Display(Name = "Nombre")]
-        [MaxLength(50, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
-        //[Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string FullName { get; set; }
+        public string FirstName { get; set; }
+        [Display(Name = "Apellido")]
+        public string LastName { get; set; }
+        [Display(Name = "Activo")]
+        public bool IsActive { get; set; }
+        public DateTime LastLoginDate { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime ModifiedOn { get; set; }
+        public string ModifiedBy { get; set; }
+
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

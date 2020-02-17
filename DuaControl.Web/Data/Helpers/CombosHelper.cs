@@ -8,14 +8,14 @@ namespace DuaControl.Web.Data.Helpers
     public class CombosHelper :ICombosHelper
     {
         private readonly DataContext _dataContext;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        //private readonly RoleHelper _roleHelper;
 
         public CombosHelper(
-            DataContext dataContext,
-             RoleManager<IdentityRole> roleManager)
+            DataContext dataContext
+           )
         {
             _dataContext = dataContext;
-            _roleManager = roleManager;
+          
         }
         public IEnumerable<SelectListItem> GetComboPorts()
         {
@@ -37,10 +37,10 @@ namespace DuaControl.Web.Data.Helpers
 
         public IEnumerable<SelectListItem> GetComboRoles()
         {
-            var list = _roleManager.Roles.Select(role => new SelectListItem
+            var list = _dataContext.Roles.Select(role => new SelectListItem
             {
                 Text = role.Name,
-                Value = $"{role.Name}"
+                Value = $"{role.Id}"
             })
                .OrderBy(port => port.Text)
                .ToList();
